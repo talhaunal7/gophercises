@@ -23,13 +23,14 @@ var addCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		db, _ := bolt.Open("my.db", 0600, nil)
+		db, _ := bolt.Open("/Users/talhaunal/Programming/go projects/gophercises/CLI Task Manager/my.db", 0600, nil)
 		defer db.Close()
 
 		err := db.Update(func(tx *bolt.Tx) error {
 			b, _ := tx.CreateBucketIfNotExists([]byte("TaskBucket"))
 			task := strings.Join(args, " ")
-			err := b.Put(getNewKeyValue(b), []byte(task))
+			key, _ := b.NextSequence()
+			err := b.Put([]byte(strconv.Itoa(int(key))) /*getNewKeyValue(b)*/, []byte(task))
 			if err != nil {
 				return err
 			}

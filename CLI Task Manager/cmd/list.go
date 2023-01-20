@@ -12,7 +12,7 @@ var listCmd = &cobra.Command{
 	Short: "List the tasks",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := bolt.Open("my.db", 0600, nil)
+		db, err := bolt.Open("/Users/talhaunal/Programming/go projects/gophercises/CLI Task Manager/my.db", 0600, nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -20,8 +20,12 @@ var listCmd = &cobra.Command{
 		db.View(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte("TaskBucket"))
 			c := b.Cursor()
+			last, _ := c.Last()
+			fmt.Println("last : ", string(last))
+			i := 0
 			for k, v := c.First(); k != nil; k, v = c.Next() {
-				fmt.Printf("%s- %s\n", k, v)
+				i++
+				fmt.Printf("%s  %d- %s\n", k, i, v)
 			}
 			return nil
 		})

@@ -2,29 +2,43 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/boltdb/bolt"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 var doCmd = &cobra.Command{
 	Use:   "do",
 	Short: "Mark a task as complete",
-	Long:  ``,
+	Args:  cobra.ExactArgs(1),
+	Long:  `task do takes exact 1 arguments for removing a task from the list`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("do is called")
+		db, _ := bolt.Open("/Users/talhaunal/Programming/go projects/gophercises/CLI Task Manager/my.db", 0600, nil)
+		defer db.Close()
+		err := db.Update(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("TaskBucket"))
+
+			c := b.Cursor()
+			goalKey, _ := strconv.Atoi(args[0])
+			i := 1
+			for k, _ := c.First(); k != nil; k, _ = c.Next() {
+				if goalKey == i {
+					b.Delete(k)
+					break
+				}
+				i++
+			}
+
+			return nil
+		})
+		if err != nil {
+			fmt.Println(err)
+		}
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(doCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// doCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// doCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
