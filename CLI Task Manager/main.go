@@ -1,8 +1,6 @@
 package main
 
-import (
-	"task/cmd"
-)
+import "task/cmd"
 
 func main() {
 	cmd.Execute()

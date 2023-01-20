@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/boltdb/bolt"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 var listCmd = &cobra.Command{
@@ -11,20 +12,24 @@ var listCmd = &cobra.Command{
 	Short: "List the tasks",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list is called")
+		db, err := bolt.Open("my.db", 0600, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db.Close()
+		db.View(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("TaskBucket"))
+			c := b.Cursor()
+			for k, v := c.First(); k != nil; k, v = c.Next() {
+				fmt.Printf("%s- %s\n", k, v)
+			}
+			return nil
+		})
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

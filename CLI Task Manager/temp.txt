@@ -1,0 +1,96 @@
+package main
+
+import "task/cmd"
+
+func main() {
+	cmd.Execute()
+	// Open the my.db data file in your current directory.
+	// It will be created if it doesn't exist.
+	/*
+		db, err := bolt.Open("my.db", 0600, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db.Close()
+
+	*/
+	/*
+		db.Update(func(tx *bolt.Tx) error {
+			err := tx.DeleteBucket([]byte("TaskBucket"))
+			if err != nil {
+				return err
+			}
+			return nil
+		})
+
+
+	*/
+	/*
+		err = db.Update(func(tx *bolt.Tx) error {
+			_, err := tx.CreateBucketIfNotExists([]byte("TaskBucket"))
+			if err != nil {
+				return fmt.Errorf("create bucket: %s", err)
+			}
+			// := tx.Bucket([]byte("TaskBucket"))
+
+			if err != nil {
+				return fmt.Errorf("open bucket: %s", err)
+			}
+			return nil
+		})
+
+	*/
+
+	/* DEL
+	er := db.Update(func(tx *bolt.Tx) error {
+		//_, err := tx.CreateBucketIfNotExists([]byte("MyBucket"))
+
+		b := tx.Bucket([]byte("MyBucket"))
+		err := b.Delete([]byte("answer"))
+		if err != nil {
+			return fmt.Errorf("delete bucket: %s", err)
+		}
+		return nil
+	})
+	if er != nil {
+		fmt.Println(er)
+	}
+	*/
+
+	/*
+		db.View(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("MyBucket"))
+			v := b.Get([]byte("answer"))
+			fmt.Printf("The answer is: %s\n", v)
+			return nil
+		})*/
+	/*
+		db.View(func(tx *bolt.Tx) error {
+			// Assume bucket exists and has keys
+			b := tx.Bucket([]byte("TaskBucket"))
+
+			c := b.Cursor()
+			//c.Seek([]byte("question"))
+			for k, v := c.First(); k != nil; k, v = c.Next() {
+				fmt.Printf("key=%s, value=%s\n", k, v)
+			}
+
+			return nil
+		})
+
+	*/
+	/*
+		db.View(func(tx *bolt.Tx) error {
+			// Assume bucket exists and has keys
+			b := tx.Bucket([]byte("TaskBucket"))
+
+			b.ForEach(func(k, v []byte) error {
+				fmt.Printf("key=%s, value=%s\n", k, v)
+				return nil
+			})
+			return nil
+		})
+
+	*/
+
+}

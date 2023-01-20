@@ -1,7 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
@@ -30,9 +26,9 @@ var rootCmd = &cobra.Command{
 	Short: "Manage your tasks simply from your terminal using task command.",
 	Long: `Task is a CLI tool that helps you add, delete and list tasks easily from your terminal.
 
-	task add (add a new task)
-	task list (list all incomplete tasks)
-	task do (mark a task as complete)
+	-task add (add a new task)
+	-task list (list all incomplete tasks)
+	-task do (mark a task as complete)
 `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
