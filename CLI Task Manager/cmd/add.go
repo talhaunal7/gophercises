@@ -30,7 +30,7 @@ var addCmd = &cobra.Command{
 			b, _ := tx.CreateBucketIfNotExists([]byte("TaskBucket"))
 			task := strings.Join(args, " ")
 			key, _ := b.NextSequence()
-			err := b.Put([]byte(strconv.Itoa(int(key))) /*getNewKeyValue(b)*/, []byte(task))
+			err := b.Put([]byte(fmt.Sprintf("%04d", key)), []byte(task))
 			if err != nil {
 				return err
 			}
