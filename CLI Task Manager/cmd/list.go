@@ -20,16 +20,13 @@ var listCmd = &cobra.Command{
 		db.View(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte("TaskBucket"))
 			c := b.Cursor()
-			last, _ := c.Last()
-			fmt.Println("last : ", string(last))
 			i := 0
 			for k, v := c.First(); k != nil; k, v = c.Next() {
 				i++
-				fmt.Printf("%s  %d- %s\n", k, i, v)
+				fmt.Printf("%d- %s\n", i, v)
 			}
 			return nil
 		})
-
 	},
 }
 
